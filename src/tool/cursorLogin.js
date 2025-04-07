@@ -23,20 +23,12 @@ async function queryAuthPoll(uuid, verifier){
     timeout: 5000
   });
 
-  let token = undefined;
   if (response.status === 200) {
     const data = await response.json();
-    const accessToken = data.accessToken || undefined;
-    const authId = data.authId || "";
-    if (authId.split("|").length > 1) {
-      const userId = authId.split("|")[1];
-      token = `${userId}%3A%3A${accessToken}`;
-    } else {
-      token = accessToken;
-    }  
+    return data
   }
 
-  return token;
+  return undefined;
 }
 
 if (require.main === module) {
@@ -52,8 +44,17 @@ if (require.main === module) {
 
     for (let i = 0; i < retryAttempts; i++) {
       console.log(`[Log] Waiting for login... (${i + 1}/${retryAttempts})`);
-      const token = await queryAuthPoll(uuid, verifier);
-      if (token) {
+      const data = await queryAuthPoll(uuid, verifier);
+      if (data) {
+        const accessToken = data.accessToken || undefined;
+        const authId = data.authId || "";
+        let token = undefined
+        if (authId.split("|").length > 1) {
+          const userId = authId.split("|")[1];
+          token = `${userId}%3A%3A${accessToken}`;
+        } else {
+          token = accessToken;
+        }
         console.log("[Log] Login successfully. Your Cursor cookie:");
         console.log(token)
         break;
