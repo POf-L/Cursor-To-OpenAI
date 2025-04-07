@@ -8,12 +8,11 @@ This project provides a proxy service that converts the AI chat of the Cursor Ed
 
 ## Preparsuitue
 
-1. Visit [Cursor](https://www.cursor.com) and register a account.
+Visit [Cursor](https://www.cursor.com) and register a account.
     - 150 fast premium requests are given, which can be reset by deleting the account and then registering again
     - Suggest to use gmail/outlook email, some temp emails have been disabled by Cursor.
 
-
-## Get Cursor client cookie
+### Get Cursor client cookie
 
 The cookie from Cursor webpage does not work in Cursor-To-OpenAI server. You need to get the Cursor client cookie following these steps:
 
@@ -24,13 +23,35 @@ The cookie from Cursor webpage does not work in Cursor-To-OpenAI server. You nee
 The log of this command looks like:
 ```
 [Log] Please open the following URL in your browser to login:
-https://www.cursor.com/cn/loginDeepControl?challenge=6aDBevuHkK-HLiZ<......>k2lEjbVRMpg&uuid=5147ac09<....>5fe5f3aeb&mode=login      <-- Copy the url and open it in your browser.
+https://www.cursor.com/loginDeepControl?challenge=6aDBevuHkK-HLiZ<......>k2lEjbVRMpg&uuid=5147ac09<....>5fe5f3aeb&mode=login      <-- Copy the url and open it in your browser.
 [Log] Waiting for login... (1/60)
 [Log] Waiting for login... (2/60)
 [Log] Waiting for login... (3/60)
 [Log] Waiting for login... (4/60)
 [Log] Login successfully. Your Cursor cookie:
 user_01JJF<.....>K3F4T8%3A%3AeyJhbGciOiJIUzI1NiIsInR5cCI6Ikp<...................>AsCpbPfnlHy022WxmlKIt4Q7Ll0     <-- This is the Cursor cookie, please save it.
+```
+
+#### API to get Cursor client cookie
+
+We provide an API to save you from manual login. You need to log in to your Cursor account in browser and get `WorkosCursorSessionToken` from Application-Cookie📄
+1. Get Cursor client cookie
+    - Url：`http://localhost:3010/cursor/loginDeepContorl`
+    - Request：`GET`
+    - Authentication：`Bearer Token`（The value of `WorkosCursorSessionToken` from Cursor webpage)
+    - Reponse: In JSON, the value of `accessToken` is the `Cursor Cookie` in JWT format. That's what you want.
+
+Sample request:
+```
+import requests
+
+WorkosCursorSessionToken = "{{{Repalce by your WorkosCursorSessionToken from cookie in browser}}}}"
+response = requests.get("http://172.207.170.121:3010/cursor/loginDeepControl", headers={
+    "authorization": f"Bearer {WorkosCursorSessionToken}"
+})
+data = response.json()
+cookie = data["access_token"]
+print(cookie)
 ```
 
 ## How to Run
