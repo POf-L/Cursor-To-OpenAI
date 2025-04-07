@@ -25,9 +25,9 @@ router.get("/loginDeepControl", async (req, res) => {
   let token = undefined
   const retryAttempts = 60
   for (let i = 0; i < retryAttempts; i++) {
-    const accessToken = await queryAuthPoll(uuid, verifier);
-    if (accessToken) {
-      token = accessToken
+    const ret = await queryAuthPoll(uuid, verifier);
+    if (ret) {
+      token = ret
       break;
     }
     await new Promise(resolve => setTimeout(resolve, 5000));
@@ -38,7 +38,7 @@ router.get("/loginDeepControl", async (req, res) => {
     }
   }
   return res.json({
-    "accessToken": token,
+    "token": token,
   })
 })
 
