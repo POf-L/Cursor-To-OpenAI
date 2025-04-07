@@ -23,23 +23,18 @@ router.get("/loginDeepControl", async (req, res) => {
   })
 
   let token = undefined
-  const retryAttempts = 60
+  const retryAttempts = 20
   for (let i = 0; i < retryAttempts; i++) {
-    const ret = await queryAuthPoll(uuid, verifier);
-    if (ret) {
-      token = ret
-      break;
+    const data = await queryAuthPoll(uuid, verifier);
+    if (data) {
+      return res.json(data)
     }
-    await new Promise(resolve => setTimeout(resolve, 5000));
-    if (i === retryAttempts - 1) {
-      return res.status(500).json({
-        error: 'Internal server error',
-      });
-    }
+    await new Promise(resolve => setTimeout(resolve, 1000));
   }
-  return res.json({
-    "token": token,
-  })
+
+  return res.status(500).json({
+    error: 'Get cookie timeout, please try again.',
+  });
 })
 
 module.exports = router;
