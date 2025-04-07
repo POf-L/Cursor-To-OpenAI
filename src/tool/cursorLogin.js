@@ -71,3 +71,8 @@ if (require.main === module) {
   });
 
 }
+
+module.exports = {
+  generatePkcePair,
+  queryAuthPoll
+}
