@@ -46,7 +46,7 @@ Sample request:
 import requests
 
 WorkosCursorSessionToken = "{{{Repalce by your WorkosCursorSessionToken from cookie in browser}}}}"
-response = requests.get("http://172.207.170.121:3010/cursor/loginDeepControl", headers={
+response = requests.get("http://localhost:3010/cursor/loginDeepControl", headers={
     "authorization": f"Bearer {WorkosCursorSessionToken}"
 })
 data = response.json()
