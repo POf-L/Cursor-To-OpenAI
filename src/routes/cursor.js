@@ -22,7 +22,6 @@ router.get("/loginDeepControl", async (req, res) => {
     })
   })
 
-  let token = undefined
   const retryAttempts = 20
   for (let i = 0; i < retryAttempts; i++) {
     const data = await queryAuthPoll(uuid, verifier);
