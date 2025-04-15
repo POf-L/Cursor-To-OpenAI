@@ -37,8 +37,8 @@ jobs:
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
-          project: "pof-l-cursor-to-o-63"
-          entrypoint: "scr/app.js"
+          project: "pof-l-cursor-to-o-31"
+          entrypoint: "src/app.js"
           root: ""
           
           
