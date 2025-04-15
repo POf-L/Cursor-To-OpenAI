@@ -32,13 +32,13 @@ jobs:
         run: "npm install"
 
       - name: Build step
-        run: "npm run build"
+        run: "npm run start"
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
-          project: "pof-l-cursor-to-o-32"
-          entrypoint: "npm run start"
-          root: "."
-          include: .next, public
+          project: "pof-l-cursor-to-o-63"
+          entrypoint: "scr/app.js"
+          root: ""
+          
           
